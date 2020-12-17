@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
+import java.util.Arrays;
+
 /**
  * @author Денис Висков
  * @version 1.0
@@ -39,7 +41,26 @@ public class MainServiceControl implements Controller<Message, SendMessage> {
         return result;
     }
 
-
+    private boolean validationRequest(String text) {
+        boolean result = false;
+        String[] splitText = text.split(" ");
+        if (splitText[0].equals(Command.ADD_FOOD.name())) {
+            result = text.contains(" -p ")
+                    && text.contains(" -wf ")
+                    && text.contains(" -ws ")
+                    && text.contains(" -wr ") ? true : false;
+        }
+        if (splitText[0].equals(Command.REPLACE_FOOD.name())) {
+            result = text.contains(" -p ")
+                    && (text.contains(" -wf ")
+                    || text.contains(" -ws ")
+                    || text.contains(" -wr ")) ? true : false;
+        }
+        if (splitText[0].equals(Command.DELETE_FOOD.name())) {
+            result = text.contains(" -p ") ? true : false;
+        }
+        return result;
+    }
 
 
 }
