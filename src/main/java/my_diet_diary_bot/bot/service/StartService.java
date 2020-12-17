@@ -3,6 +3,11 @@ package my_diet_diary_bot.bot.service;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Денис Висков
@@ -16,6 +21,7 @@ public class StartService implements Worker<Message, SendMessage> {
     public SendMessage executeCommand(Message message) {
         SendMessage result = new SendMessage();
         result.setText(greeting(message.getChat().getUserName()));
+        result.setReplyMarkup(getKeyboard());
         return result;
     }
 
@@ -32,5 +38,29 @@ public class StartService implements Worker<Message, SendMessage> {
                 + replace_food + System.lineSeparator()
                 + delete_food;
         return result;
+    }
+
+    private ReplyKeyboardMarkup getKeyboard() {
+        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
+        replyKeyboardMarkup.setSelective(true);
+        replyKeyboardMarkup.setResizeKeyboard(true);
+        replyKeyboardMarkup.setOneTimeKeyboard(false);
+
+        List<KeyboardRow> keyboard = new ArrayList<>();
+        KeyboardRow keyboardFirstRow = new KeyboardRow();
+        keyboardFirstRow.add(Command.ADD_FOOD.getOption());
+        keyboardFirstRow.add(Command.REPLACE_FOOD.getOption());
+        keyboardFirstRow.add(Command.DELETE_FOOD.getOption());
+
+        KeyboardRow keyboardSecondRow = new KeyboardRow();
+        keyboardSecondRow.add(Options.p.getOption());
+        keyboardSecondRow.add(Options.wf.getOption());
+        keyboardSecondRow.add(Options.ws.getOption());
+        keyboardSecondRow.add(Options.wr.getOption());
+
+        keyboard.add(keyboardFirstRow);
+        keyboard.add(keyboardSecondRow);
+        replyKeyboardMarkup.setKeyboard(keyboard);
+        return replyKeyboardMarkup;
     }
 }
