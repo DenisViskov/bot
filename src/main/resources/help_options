@@ -7,3 +7,6 @@ Please use commands with options:
 All weight indicates in gram
 2./REPLACE_FOOD:
   -p productName (specified product name)
+  -wf or -ws or -wr (specified selected type weight)
+3./DELETE_FOOD:
+  -p productName (specified product name)
