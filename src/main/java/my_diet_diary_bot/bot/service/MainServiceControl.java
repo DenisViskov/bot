@@ -11,6 +11,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
  */
 @Service
 public class MainServiceControl implements Controller<Message, SendMessage> {
+
     @Override
     public SendMessage getResponse(Message message) {
         SendMessage result = new SendMessage();
@@ -22,22 +23,39 @@ public class MainServiceControl implements Controller<Message, SendMessage> {
         String text = message.getText();
         switch (text) {
             case "/start":
+                result.setText(startCommand(message
+                        .getChat()
+                        .getUserName()));
                 break;
-
             case "/add_food":
                 break;
-
             case "/replace_food":
                 break;
-
             case "/delete_food":
                 break;
         }
         return result;
     }
 
-    private SendMessage startCommand(){
-        return null;
+    private String startCommand(String userName) {
+        String introduction = "Hello my dear " + userName + " ! "
+                + "In that chat bot available calculating the amount of food consuming.";
+        String add_food = "/"
+                + Command.ADD_FOOD
+                .name() + " - " + "add new product to bucket";
+        String replace_food = "/"
+                + Command.REPLACE_FOOD
+                .name() + " - " + "replace product in bucket by given name";
+        String delete_food = "/"
+                + Command.DELETE_FOOD
+                .name() + " - " + "delete product from bucket by given name";
+        String result = introduction + System.lineSeparator()
+                + "Description about commands:"
+                + System.lineSeparator()
+                + add_food + System.lineSeparator()
+                + replace_food + System.lineSeparator()
+                + delete_food;
+        return result;
     }
 
 
