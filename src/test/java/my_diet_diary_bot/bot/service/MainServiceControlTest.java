@@ -56,4 +56,19 @@ class MainServiceControlTest {
         SendMessage response = control.getResponse(message);
         assertEquals(Long.valueOf(response.getChatId()),123l);
     }
+
+    @Test
+    void getResponseDelete() {
+        MainServiceControl control = new MainServiceControl(new StartService());
+        Message message = mock(Message.class);
+        Chat chat = mock(Chat.class);
+
+        when(message.getText()).thenReturn("/DELETE_FOOD -p productName");
+        when(message.getChat()).thenReturn(chat);
+        when(message.getChatId()).thenReturn(123l);
+        when(chat.getUserName()).thenReturn("DenisViskov");
+
+        SendMessage response = control.getResponse(message);
+        assertEquals(Long.valueOf(response.getChatId()),123l);
+    }
 }
