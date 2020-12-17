@@ -1,5 +1,7 @@
 package my_diet_diary_bot.bot.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -11,52 +13,33 @@ import org.telegram.telegrambots.meta.api.objects.Message;
  */
 @Service
 public class MainServiceControl implements Controller<Message, SendMessage> {
+    private final Worker start;
+
+    @Autowired
+    public MainServiceControl(@Qualifier("startService") Worker start) {
+        this.start = start;
+    }
 
     @Override
     public SendMessage getResponse(Message message) {
         SendMessage result = new SendMessage();
-        result.setChatId(message.getChatId().toString());
-        if (!message.hasText()) {
-            result.setText("Oops, i think you sent an empty message");
-            return result;
-        }
         String text = message.getText();
         switch (text) {
             case "/start":
-                result.setText(startCommand(message
-                        .getChat()
-                        .getUserName()));
+                result = (SendMessage) start.executeCommand(message);
                 break;
-            case "/add_food":
+            case "/ADD_FOOD":
                 break;
-            case "/replace_food":
+            case "/REPLACE_FOOD":
                 break;
-            case "/delete_food":
+            case "/DELETE_FOOD":
                 break;
         }
+        result.setChatId(message.getChatId().toString());
         return result;
     }
 
-    private String startCommand(String userName) {
-        String introduction = "Hello my dear " + userName + " ! "
-                + "In that chat bot available calculating the amount of food consuming.";
-        String add_food = "/"
-                + Command.ADD_FOOD
-                .name() + " - " + "add new product to bucket";
-        String replace_food = "/"
-                + Command.REPLACE_FOOD
-                .name() + " - " + "replace product in bucket by given name";
-        String delete_food = "/"
-                + Command.DELETE_FOOD
-                .name() + " - " + "delete product from bucket by given name";
-        String result = introduction + System.lineSeparator()
-                + "Description about commands:"
-                + System.lineSeparator()
-                + add_food + System.lineSeparator()
-                + replace_food + System.lineSeparator()
-                + delete_food;
-        return result;
-    }
+
 
 
 }
