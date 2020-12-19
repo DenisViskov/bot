@@ -12,30 +12,36 @@ import org.telegram.telegrambots.meta.api.objects.Message;
  * @since 19.12.2020
  */
 @Service
-public class CommandResolverService implements Resolver<SendMessage, Message>{
+public class CommandResolverService implements Resolver<SendMessage, Message> {
   private final Command helper;
+  private final Command calculator;
 
   @Autowired
-  public CommandResolverService(@Qualifier("helperService") Command helper) {
+  public CommandResolverService(@Qualifier("helperService") Command helper,
+      @Qualifier("calculatorService") Command calculator) {
     this.helper = helper;
+    this.calculator = calculator;
   }
 
   @Override
   public SendMessage resolveCommand(Message message) {
     SendMessage result = new SendMessage();
-    result.setChatId(String.valueOf(message.getChatId()));
-    if(!validateMessage(message)){
+    if (!validateMessage(message)) {
       result = (SendMessage) helper.executeCommand(message);
+    }
+    String text = message.getText();
+    if(text.matches("\\A\\d+\\s\\d+\\s\\d+\\Z")){
+      result = (SendMessage) calculator.executeCommand(message);
     }
     return result;
   }
 
-  private boolean validateMessage(Message message){
-    if(!message.hasText()){
+  private boolean validateMessage(Message message) {
+    if (!message.hasText()) {
       return false;
     }
     String text = message.getText();
-    if(text.matches("\\A\\d+\\s\\d+\\s\\d+\\Z")){
+    if (text.matches("\\A\\d+\\s\\d+\\s\\d+\\Z")) {
       return true;
     }
     return false;
