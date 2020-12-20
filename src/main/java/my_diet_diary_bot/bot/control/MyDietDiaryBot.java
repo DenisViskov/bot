@@ -3,6 +3,8 @@ package my_diet_diary_bot.bot.control;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -18,6 +20,7 @@ import my_diet_diary_bot.bot.service.Resolver;
  * @since 17.12.2020
  */
 @Component
+@EnableAsync
 @PropertySource("classpath:application.properties")
 public class MyDietDiaryBot extends TelegramLongPollingBot {
     @Value("${token}")
@@ -27,6 +30,7 @@ public class MyDietDiaryBot extends TelegramLongPollingBot {
     @Autowired
     private Resolver resolver;
 
+    @Async
     @Override
     public void onUpdateReceived(Update update) {
         Message message = update.getMessage();
