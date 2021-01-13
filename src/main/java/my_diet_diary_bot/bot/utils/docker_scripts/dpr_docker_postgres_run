@@ -1,0 +1,11 @@
+#!/bin/bash
+
+
+# Run container
+# User postgres
+# Password 021292
+echo "Running docker container postgres"
+sudo docker run --name postgres -p 5432:5432 -e POSTGRES_PASSWORD=021292 -d postgres
+
+
+exit 0

@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# Pull docker postgres image
+echo "Started pull postgres image"
+sudo docker pull postgres
+
+
+exit 0
