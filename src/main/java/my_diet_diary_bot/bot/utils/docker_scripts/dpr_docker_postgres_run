@@ -7,9 +7,10 @@
 echo "Build docker container postgres"
 docker ps -a | grep postgres
 if [ $? -ne 0 ]; then
-  sudo docker rm postgres
+  sudo docker start -a postgres;
+else
+  sudo docker run --name postgres -p 5432:5432 -e POSTGRES_PASSWORD=021292 -d postgres
 fi
-sudo docker run --name postgres -p 5432:5432 -e POSTGRES_PASSWORD=021292 -d postgres
 
 
 exit 0
