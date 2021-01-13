@@ -4,7 +4,11 @@
 # Run container
 # User postgres
 # Password 021292
-echo "Running docker container postgres"
+echo "Build docker container postgres"
+docker ps -a | grep postgres
+if [ $? -ne 0 ]; then
+  sudo docker rm postgres
+fi
 sudo docker run --name postgres -p 5432:5432 -e POSTGRES_PASSWORD=021292 -d postgres
 
 

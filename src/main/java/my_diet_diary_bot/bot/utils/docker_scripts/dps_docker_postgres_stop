@@ -1,0 +1,9 @@
+#!/bin/bash
+
+
+# Stop container
+echo "stop container postgres"
+sudo docker stop postgres
+
+
+exit 0
