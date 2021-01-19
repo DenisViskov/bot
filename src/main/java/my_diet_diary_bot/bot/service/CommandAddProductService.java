@@ -4,6 +4,7 @@ import my_diet_diary_bot.bot.domain.Person;
 import my_diet_diary_bot.bot.repository.PersonRepository;
 import my_diet_diary_bot.bot.repository.ProductRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
@@ -20,6 +21,7 @@ public class CommandAddProductService implements Command<SendMessage, Message> {
     }
 
     @Override
+    @Transactional
     public SendMessage executeCommand(Message message) {
         Optional<Person> box = personRepository.findByChatId(message.getChatId());
         Person person = box.orElse(personRepository.save(new Person(message.getChatId(),
@@ -36,8 +38,9 @@ public class CommandAddProductService implements Command<SendMessage, Message> {
         result.setChatId(String.valueOf(message.getChatId()));
         String text = message.getText();
         if(text.equals(Commands.ADD_PRODUCT.getUserCommand())){
-            result.setText("Введите пожалуйста имя продукта");
+            result.setText("Введите пожалуйста имя продукта:");
         } else {
+            Person person = personRepository.findByChatId(message.getChatId()).get();
 
         }
     }
