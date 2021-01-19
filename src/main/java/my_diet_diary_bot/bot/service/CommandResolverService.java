@@ -40,9 +40,13 @@ public class CommandResolverService implements Resolver<SendMessage, Message> {
         if (message.getText().matches("\\A\\d+\\s\\d+\\s\\d+\\Z")) {
             result = (SendMessage) calculator.executeCommand(message);
         }
-        if (message.getText().equals(Commands.ADD_PRODUCT.getUserCommand())
-                || message.getText().equals(Commands.EDIT_PRODUCT.getUserCommand())
-                || message.getText().equals(Commands.DELETE_PRODUCT.getUserCommand())) {
+        if (message.getText().equals(Commands.ADD_PRODUCT.getUserCommand())) {
+
+        }
+        if (message.getText().equals(Commands.EDIT_PRODUCT.getUserCommand())) {
+
+        }
+        if (message.getText().equals(Commands.DELETE_PRODUCT.getUserCommand())) {
 
         }
         if (box.isPresent()) {
@@ -62,26 +66,4 @@ public class CommandResolverService implements Resolver<SendMessage, Message> {
         return result;
     }
 
-    private boolean validateMessage(Message message) {
-        if (!message.hasText()) {
-            return false;
-        }
-        String text = message.getText();
-        boolean regexBySimpleCounter = text.matches("\\A\\d+\\s\\d+\\s\\d+\\Z");
-        boolean coreCommands = text.equals(Commands.ADD_PRODUCT.getUserCommand())
-                || text.equals(Commands.EDIT_PRODUCT.getUserCommand())
-                || text.equals(Commands.DELETE_PRODUCT.getUserCommand());
-        Optional<Person> box = personRepository.findByChatId(message.getChatId());
-        boolean hasStatus = box.isPresent() && (box.get().getModeType() != null);
-        if (regexBySimpleCounter) {
-            return true;
-        }
-        if (coreCommands) {
-            return true;
-        }
-        if (hasStatus) {
-            return true;
-        }
-        return false;
-    }
 }
