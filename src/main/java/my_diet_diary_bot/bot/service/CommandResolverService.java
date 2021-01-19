@@ -1,11 +1,14 @@
 package my_diet_diary_bot.bot.service;
 
+import my_diet_diary_bot.bot.domain.Person;
 import my_diet_diary_bot.bot.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
+
+import java.util.Optional;
 
 /**
  * @author Денис Висков
@@ -49,10 +52,17 @@ public class CommandResolverService implements Resolver<SendMessage, Message> {
         boolean coreCommands = text.equals(Commands.ADD_PRODUCT.getUserCommand())
                 || text.equals(Commands.EDIT_PRODUCT.getUserCommand())
                 || text.equals(Commands.DELETE_PRODUCT.getUserCommand());
+        Optional<Person> box = personRepository.findByChatId(message.getChatId());
+        boolean hasStatus = box.isPresent() && (box.get().getModeType() != null);
         if (regexBySimpleCounter) {
             return true;
         }
-
+        if (coreCommands) {
+            return true;
+        }
+        if (hasStatus) {
+            return true;
+        }
         return false;
     }
 }
