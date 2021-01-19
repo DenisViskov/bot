@@ -1,6 +1,6 @@
 package my_diet_diary_bot.bot.service;
 
-import my_diet_diary_bot.bot.domain.Person;
+import my_diet_diary_bot.bot.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -16,12 +16,15 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 public class CommandResolverService implements Resolver<SendMessage, Message> {
     private final Command helper;
     private final Command calculator;
+    private final PersonRepository personRepository;
 
     @Autowired
     public CommandResolverService(@Qualifier("helperService") Command helper,
-                                  @Qualifier("calculatorService") Command calculator) {
+                                  @Qualifier("calculatorService") Command calculator,
+                                  PersonRepository personRepository) {
         this.helper = helper;
         this.calculator = calculator;
+        this.personRepository = personRepository;
     }
 
     @Override
