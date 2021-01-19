@@ -33,12 +33,31 @@ public class CommandResolverService implements Resolver<SendMessage, Message> {
     @Override
     public SendMessage resolveCommand(Message message) {
         SendMessage result = new SendMessage();
-        if (!validateMessage(message)) {
+        Optional<Person> box = personRepository.findByChatId(message.getChatId());
+        if (!message.hasText()) {
             result = (SendMessage) helper.executeCommand(message);
         }
-        String text = message.getText();
-        if (text.matches("\\A\\d+\\s\\d+\\s\\d+\\Z")) {
+        if (message.getText().matches("\\A\\d+\\s\\d+\\s\\d+\\Z")) {
             result = (SendMessage) calculator.executeCommand(message);
+        }
+        if (message.getText().equals(Commands.ADD_PRODUCT.getUserCommand())
+                || message.getText().equals(Commands.EDIT_PRODUCT.getUserCommand())
+                || message.getText().equals(Commands.DELETE_PRODUCT.getUserCommand())) {
+
+        }
+        if (box.isPresent()) {
+            Person person = box.get();
+            if (person.getModeType().equals(ModeTypes.ADD)) {
+
+            } else if (person.getModeType().equals(ModeTypes.EDIT)) {
+
+            } else if (person.getModeType().equals(ModeTypes.DELETE)) {
+
+            } else {
+                result = (SendMessage) helper.executeCommand(message);
+            }
+        } else {
+            result = (SendMessage) helper.executeCommand(message);
         }
         return result;
     }
