@@ -27,8 +27,8 @@ public class Person {
     @Column(name = "modeType")
     private ModeTypes modeType;
     @Enumerated(EnumType.STRING)
-    @Column(name = "last_action")
-    private Actions last_action;
+    @Column(name = "lastAction")
+    private Actions lastAction;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Product> products;
 
@@ -36,11 +36,11 @@ public class Person {
         products = new HashSet<>();
     }
 
-    public Person(long chatId, String userName, ModeTypes modeType, Actions last_action) {
+    public Person(long chatId, String userName, ModeTypes modeType, Actions lastAction) {
         this.chatId = chatId;
         this.userName = userName;
         this.modeType = modeType;
-        this.last_action = last_action;
+        this.lastAction = lastAction;
         products = new HashSet<>();
     }
 
@@ -80,12 +80,12 @@ public class Person {
         this.modeType = modeType;
     }
 
-    public Actions getLast_action() {
-        return last_action;
+    public Actions getLastAction() {
+        return lastAction;
     }
 
-    public void setLast_action(Actions last_action) {
-        this.last_action = last_action;
+    public void setLastAction(Actions last_action) {
+        this.lastAction = last_action;
     }
 
     public Set<Product> getProducts() {
@@ -105,12 +105,12 @@ public class Person {
                 chatId == person.chatId &&
                 Objects.equals(userName, person.userName) &&
                 modeType == person.modeType &&
-                last_action == person.last_action &&
+                lastAction == person.lastAction &&
                 Objects.equals(products, person.products);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, chatId, userName, modeType, last_action, products);
+        return Objects.hash(id, chatId, userName, modeType, lastAction, products);
     }
 }
