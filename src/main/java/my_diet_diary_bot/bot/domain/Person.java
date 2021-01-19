@@ -1,5 +1,8 @@
 package my_diet_diary_bot.bot.domain;
 
+import my_diet_diary_bot.bot.service.Actions;
+import my_diet_diary_bot.bot.service.ModeTypes;
+
 /**
  * @author Денис Висков
  * @version 1.0
@@ -9,8 +12,6 @@ public class Person {
   private long id;
   private long chatId;
   private String userName;
-  private String modeType;
-  private String last_action;
-
-
+  private ModeTypes modeType;
+  private Actions last_action;
 }

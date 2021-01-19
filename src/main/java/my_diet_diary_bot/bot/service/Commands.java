@@ -16,4 +16,8 @@ public enum Commands {
   Commands(String userCommand) {
     this.userCommand = userCommand;
   }
+
+  public String getUserCommand() {
+    return userCommand;
+  }
 }
