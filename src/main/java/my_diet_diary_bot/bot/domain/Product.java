@@ -1,7 +1,5 @@
 package my_diet_diary_bot.bot.domain;
 
-import org.hibernate.annotations.GeneratorType;
-
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -21,16 +19,19 @@ public class Product {
     private double oneConsumeWeight;
     @Column(name = "resultWeight")
     private double resultWeight;
+    @Column(name = "currentEdit")
+    private boolean currentEdit;
 
     public Product() {
     }
 
-    public Product(String name, double rawWeight, double readyWeight, double oneConsumeWeight, double resultWeight) {
+    public Product(String name, double rawWeight, double readyWeight, double oneConsumeWeight, double resultWeight, boolean currentEdit) {
         this.name = name;
         this.rawWeight = rawWeight;
         this.readyWeight = readyWeight;
         this.oneConsumeWeight = oneConsumeWeight;
         this.resultWeight = resultWeight;
+        this.currentEdit = currentEdit;
     }
 
     public long getId() {
@@ -81,6 +82,14 @@ public class Product {
         this.resultWeight = resultWeight;
     }
 
+    public boolean isCurrentEdit() {
+        return currentEdit;
+    }
+
+    public void setCurrentEdit(boolean currentEdit) {
+        this.currentEdit = currentEdit;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -91,11 +100,12 @@ public class Product {
                 Double.compare(product.readyWeight, readyWeight) == 0 &&
                 Double.compare(product.oneConsumeWeight, oneConsumeWeight) == 0 &&
                 Double.compare(product.resultWeight, resultWeight) == 0 &&
+                currentEdit == product.currentEdit &&
                 Objects.equals(name, product.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, rawWeight, readyWeight, oneConsumeWeight, resultWeight);
+        return Objects.hash(id, name, rawWeight, readyWeight, oneConsumeWeight, resultWeight, currentEdit);
     }
 }
